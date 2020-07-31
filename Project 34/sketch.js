@@ -4,31 +4,35 @@ var happyDog;
 var database;
 var foodS;
 var feedback;
+var dogImage,dogImage1;
 function preload()
 {
   //load images here
-  this.dog.loadImage(images/dogImg.png);
-  this.dog.loadImage(images/dogImg1.png);
+  dogImage = loadImage("images/dogImg.png");
+  dogImage1 = loadImage("images/dogImg1.png");
 }
 
 function setup() {
   createCanvas(500, 500);
-  dog.drawSprites();
-  dog.loadImage(images/dogImg);
-  dog.loadImage(images/dogImg1);
-  foodStock=database.ref('Food');
+  database = firebase.database();
+  dog = createSprite(250,300,150,150);
+  dog.addImage("dogHappy",dogImage);
+  dog.scale = 0.2;
+  foodStock=database.ref('food');
   foodStock.on("value",readStock);
 }
 
 
 function draw() {  
 background(46,139,87)
-  drawSprites();
   //add styles here
-if(KeyWentDown(UP_ARROW)){
+if(keyWentDown(UP_ARROW)){
   writeStock(foodS);
-  dog.addImage(dogHappy);
+  dog.addImage(dogImage1);
 }
+drawSprites();
+textSize(40);
+text(foodS,170,200);
 }
 
 //Function to read values from DB
@@ -46,6 +50,6 @@ function writeStock(x){
   }
 
   database.ref('/').update({
-    Food:x
+    food:x
   })
 }
